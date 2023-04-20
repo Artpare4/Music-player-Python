@@ -3,3 +3,5 @@
 - Pydub
 - Tkinter
 - Pygame
+- os
+- pydoc
