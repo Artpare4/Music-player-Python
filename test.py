@@ -5,4 +5,4 @@ import pygame
 from main import *
 
 test=main()
-test.launch()
+test.main()
