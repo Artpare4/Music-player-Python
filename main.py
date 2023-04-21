@@ -2,8 +2,8 @@ import tkinter
 from tkinter import *
 from tkinter import filedialog
 import os
-import pygame.mixer_music
 from pydoc import *
+from pydub import AudioSegment,playback
 
 class main :
     def __init__(self):
@@ -18,6 +18,8 @@ class main :
         self.song_list=[] ## Liste des chansons contenu dans la répertoire que l'utilisateur peut choisir
         self.song_directory=None ##Chemin d'accès au répertoire
         self.listbox_musique=Listbox(selectmode="select") ## liste de choix des musique disponible
+        self.full_song_directory=None ## concaténation du chemin d'accès au répertoire (song_directory) + le nom du titre
+        self.play_obj=None
     def add_button(self,texte:str):
         """
         Méthode de la classe main. Cette méthode permet de créer un bouton avec un texte associé passé un paramètre.
@@ -41,13 +43,24 @@ class main :
         Méthode de la classe main. Cette méthode active et joue la musique choise par l'utilisateur.
         :return:
         """
-        pass
+        song=self.listbox_musique.get(self.listbox_musique.curselection())
+        if self.full_song_directory!=None:
+            self.play_obj.stop()
+            self.full_song_directory=self.song_directory+"/"+song
+            music=AudioSegment.from_file(self.full_song_directory)
+            self.play_obj = playback._play_with_simpleaudio(music)
+        else:
+
+            self.full_song_directory=self.song_directory+"/"+song
+            music = AudioSegment.from_file(self.full_song_directory)
+            self.play_obj = playback._play_with_simpleaudio(music)
+
     def stop(self):
         """
         Méthode de la classe main. Cette méthode stop la musique choise par l'utilisateur.
         :return:
         """
-        pass
+        self.play_obj.stop()
     def set_empty_list_song(self):
         """
         Méthode de la classe main. Cette méthode permet de vider la liste des titres des chansons disponible dans le répertoire.
@@ -108,7 +121,12 @@ class main :
         button1=Button(self.app,text="Ouvrir")
         button1.place(x=100,y=100)
         button1.configure(command=self.set_song_choice)
-
+        ## bouton play
+        button_play=Button(self.app,text="Play",command=self.play)
+        button_play.place(x=50,y=50)
+        ## bouton pause
+        button_pause=Button(self.app,text="Pause",command=self.stop)
+        button_pause.place(x=50,y=100)
         ## mise en place listebox
         self.listbox_musique.place(x=200,y=200)
 
@@ -117,13 +135,11 @@ class main :
         self.add_musique_listbox(self.listbox_musique)
     def test(self):
         print("test Validé")
-
     def main(self):
         """
         Méthode de la classe main. Cette méthode permet d'exécuter l'application.
         :return:
         """
-
         self.set_all()
         self.app.mainloop()
 
