@@ -2,7 +2,6 @@ import tkinter
 from tkinter import *
 from tkinter import filedialog
 import os
-from pydoc import *
 from pydub import AudioSegment,playback
 
 class main :
@@ -19,7 +18,7 @@ class main :
         self.song_directory=None ##Chemin d'accès au répertoire
         self.listbox_musique=Listbox(selectmode="select") ## liste de choix des musique disponible
         self.full_song_directory=None ## concaténation du chemin d'accès au répertoire (song_directory) + le nom du titre
-        self.play_obj=None
+        self.play_obj=None ## objet de la chanson
     def add_button(self,texte:str):
         """
         Méthode de la classe main. Cette méthode permet de créer un bouton avec un texte associé passé un paramètre.
@@ -44,13 +43,12 @@ class main :
         :return:
         """
         song=self.listbox_musique.get(self.listbox_musique.curselection())
-        if self.full_song_directory!=None:
+        if self.full_song_directory!=None: ## si il y a déjà une musique qui est jouée
             self.play_obj.stop()
             self.full_song_directory=self.song_directory+"/"+song
             music=AudioSegment.from_file(self.full_song_directory)
             self.play_obj = playback._play_with_simpleaudio(music)
         else:
-
             self.full_song_directory=self.song_directory+"/"+song
             music = AudioSegment.from_file(self.full_song_directory)
             self.play_obj = playback._play_with_simpleaudio(music)

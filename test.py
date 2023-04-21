@@ -6,4 +6,3 @@ from main import *
 
 test=main()
 test.main()
-test_audio=playback._play_with_simpleaudio()

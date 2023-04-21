@@ -2,6 +2,5 @@
 ## Configuration 
 - Pydub
 - Tkinter
-- Pygame
 - os
-- pydoc
+- simpleaudio
