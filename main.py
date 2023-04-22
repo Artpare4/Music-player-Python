@@ -19,6 +19,7 @@ class main :
         self.listbox_musique=Listbox(selectmode="select") ## liste de choix des musique disponible
         self.full_song_directory=None ## concaténation du chemin d'accès au répertoire (song_directory) + le nom du titre
         self.play_obj=None ## objet de la chanson
+
     def add_button(self,texte:str):
         """
         Méthode de la classe main. Cette méthode permet de créer un bouton avec un texte associé passé un paramètre.
@@ -46,12 +47,22 @@ class main :
         if self.full_song_directory!=None: ## si il y a déjà une musique qui est jouée
             self.play_obj.stop()
             self.full_song_directory=self.song_directory+"/"+song
-            music=AudioSegment.from_file(self.full_song_directory)
-            self.play_obj = playback._play_with_simpleaudio(music)
+            if song.endswith(".mp3") :
+                music=AudioSegment.from_file(self.full_song_directory,format="mp3")
+
+                self.play_obj = playback._play_with_simpleaudio(music)
+            else:
+                music=AudioSegment.from_wav(self.full_song_directory)
+                self.play_obj = playback._play_with_simpleaudio(music)
+
         else:
             self.full_song_directory=self.song_directory+"/"+song
-            music = AudioSegment.from_file(self.full_song_directory)
-            self.play_obj = playback._play_with_simpleaudio(music)
+            if song.endswith(".mp3"):
+                music = AudioSegment.from_file(self.full_song_directory, format="mp3")
+                self.play_obj = playback._play_with_simpleaudio(music)
+            else:
+                music = AudioSegment.from_wav(self.full_song_directory)
+                self.play_obj = playback._play_with_simpleaudio(music)
 
     def stop(self):
         """
@@ -81,6 +92,7 @@ class main :
         et met à jour la liste de chanson disponible (que l'utilisateur peut écouter).
         :return:
         """
+        print(self.song_list)
         self.song_directory=filedialog.askdirectory() ## on demande le chemin d'accès au répertoire
         self.set_empty_list_song() ## suppression du contenu de la liste de chanson
         self.listbox_musique.delete(0,"end") ## suppression du contenu de la listebox
@@ -131,8 +143,6 @@ class main :
         ## première recherche dans un répertoire (quand on lance l'appli)
         self.set_song_choice()
         self.add_musique_listbox(self.listbox_musique)
-    def test(self):
-        print("test Validé")
     def main(self):
         """
         Méthode de la classe main. Cette méthode permet d'exécuter l'application.
