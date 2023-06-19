@@ -1,5 +1,6 @@
 # Music MP3 Player
-## Configuration 
+Petit projet (non terminé) de création d'un lecteur de musique MP3 sous python
+## Modules utilisé
 - Pydub
 - Tkinter
 - os
